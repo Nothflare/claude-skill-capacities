@@ -118,10 +118,7 @@ function openUrl(url) {
   return new Promise((resolve, reject) => {
     let cmd;
     if (process.platform === "win32") {
-      // Windows: use start command, escape shell metacharacters
-      // & ^ % need escaping in cmd.exe
-      const escaped = url.replace(/[&^%]/g, "^$&");
-      cmd = `start "" "${escaped}"`;
+      cmd = `start "" "${url}"`;
     } else if (process.platform === "darwin") {
       cmd = `open "${url}"`;
     } else {
