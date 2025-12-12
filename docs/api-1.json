@@ -1,0 +1,779 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Capacities API (Beta)",
+    "version": "0.1.0",
+    "description": "The Capacities API allows you to interact with Capacities from external applications. You can read more about the API in our [documentation](https://docs.capacities.io/developer/api).",
+    "termsOfService": "https://capacities.io/terms-and-conditions",
+    "contact": {
+      "name": "Capacities Team",
+      "email": "team@capacities.io"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.capacities.io"
+    }
+  ],
+  "externalDocs": {
+    "url": "https://docs.capacities.io/developer/api",
+    "description": "Documentation & Guidelines"
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "General",
+      "description": "Global functions to extract a context"
+    },
+    {
+      "name": "Content",
+      "description": "Functions to work with content"
+    }
+  ],
+  "paths": {
+    "/spaces": {
+      "get": {
+        "summary": "Get your spaces",
+        "description": "Returns information about your personal spaces.\n\n<br>\n\n**Rate limit**: 5 requests per 60 seconds ([Learn more](https://docs.capacities.io/developer/api#rate-limits)) ",
+        "tags": [
+          "General"
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spaces": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "icon": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "emoji"
+                                  },
+                                  "val": {
+                                    "type": "string"
+                                  },
+                                  "color": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string",
+                                        "enum": [
+                                          "gray",
+                                          "rose",
+                                          "pink",
+                                          "fuchsia",
+                                          "purple",
+                                          "violet",
+                                          "indigo",
+                                          "blue",
+                                          "sky",
+                                          "cyan",
+                                          "teal",
+                                          "emerald",
+                                          "green",
+                                          "lime",
+                                          "yellow",
+                                          "amber",
+                                          "orange",
+                                          "red"
+                                        ]
+                                      },
+                                      {
+                                        "type": "string",
+                                        "const": "neutral"
+                                      }
+                                    ]
+                                  },
+                                  "colorHex": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "val"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "type": {
+                                    "type": "string",
+                                    "const": "iconify"
+                                  },
+                                  "val": {
+                                    "type": "string"
+                                  },
+                                  "color": {
+                                    "anyOf": [
+                                      {
+                                        "type": "string",
+                                        "enum": [
+                                          "gray",
+                                          "rose",
+                                          "pink",
+                                          "fuchsia",
+                                          "purple",
+                                          "violet",
+                                          "indigo",
+                                          "blue",
+                                          "sky",
+                                          "cyan",
+                                          "teal",
+                                          "emerald",
+                                          "green",
+                                          "lime",
+                                          "yellow",
+                                          "amber",
+                                          "orange",
+                                          "red"
+                                        ]
+                                      },
+                                      {
+                                        "type": "string",
+                                        "const": "neutral"
+                                      }
+                                    ]
+                                  },
+                                  "colorHex": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "type",
+                                  "val"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "spaces"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/space-info": {
+      "get": {
+        "summary": "Get structures and collections of a space",
+        "description": "Returns all structures (object types) with property definitions and collections of a space.\n\n<br>\n\n**Rate limit**: 5 requests per 60 seconds ([Learn more](https://docs.capacities.io/developer/api#rate-limits)) ",
+        "tags": [
+          "General"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "spaceid",
+            "schema": {
+              "description": "[Learn more](https://docs.capacities.io/developer/api#content-ids)",
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "required": true,
+            "description": "[Learn more](https://docs.capacities.io/developer/api#content-ids)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "structures": {
+                      "description": "[Learn more](https://docs.capacities.io/developer/api#structures)",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "pluralName": {
+                            "type": "string"
+                          },
+                          "propertyDefinitions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "type": {
+                                  "type": "string"
+                                },
+                                "dataType": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "type",
+                                "dataType",
+                                "name"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "labelColor": {
+                            "type": "string"
+                          },
+                          "collections": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "title": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "title"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "pluralName",
+                          "propertyDefinitions",
+                          "labelColor",
+                          "collections"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "structures"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "summary": "Search for content",
+        "description": "Returns content based on a search term in a set of spaces.\n\n<br>\n\n**Rate limit**: 120 requests per 60 seconds ([Learn more](https://docs.capacities.io/developer/api#rate-limits)) ",
+        "tags": [
+          "Content"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "default": "title",
+                    "type": "string",
+                    "enum": [
+                      "fullText",
+                      "title"
+                    ]
+                  },
+                  "searchTerm": {
+                    "example": "Artificial Intelligence",
+                    "type": "string"
+                  },
+                  "spaceIds": {
+                    "description": "IDs of the spaces to search in. ([Learn more](https://docs.capacities.io/developer/api#content-ids))",
+                    "example": [
+                      "c722edd0-7cee-4e3c-b5f5-27915dcdbf3b"
+                    ],
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    }
+                  },
+                  "filterStructureIds": {
+                    "description": "Filter for a set of structureIds. If not specified, all content will be searched",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": [
+                      "RootTag"
+                    ]
+                  }
+                },
+                "required": [
+                  "searchTerm",
+                  "spaceIds"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "spaceId": {
+                            "type": "string"
+                          },
+                          "structureId": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "highlights": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "context": {
+                                  "anyOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "title"
+                                        }
+                                      },
+                                      "required": [
+                                        "field"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "aliases"
+                                        }
+                                      },
+                                      "required": [
+                                        "field"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "description"
+                                        }
+                                      },
+                                      "required": [
+                                        "field"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "properties"
+                                        },
+                                        "propertyId": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "field",
+                                        "propertyId"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "blocksContent"
+                                        },
+                                        "propertyId": {
+                                          "type": "string"
+                                        },
+                                        "blockId": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "field",
+                                        "propertyId",
+                                        "blockId"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "mediaContent"
+                                        },
+                                        "location": {
+                                          "type": "object",
+                                          "properties": {
+                                            "mediaContentType": {
+                                              "type": "string",
+                                              "enum": [
+                                                "tweet",
+                                                "chatMessage"
+                                              ]
+                                            },
+                                            "id": {
+                                              "type": "string"
+                                            }
+                                          },
+                                          "required": [
+                                            "mediaContentType",
+                                            "id"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      },
+                                      "required": [
+                                        "field",
+                                        "location"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "tags"
+                                        }
+                                      },
+                                      "required": [
+                                        "field"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "field": {
+                                          "type": "string",
+                                          "const": "inTextTags"
+                                        }
+                                      },
+                                      "required": [
+                                        "field"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  ]
+                                },
+                                "snippets": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                "score": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "context",
+                                "snippets"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "spaceId",
+                          "structureId",
+                          "highlights"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "results"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/save-weblink": {
+      "post": {
+        "summary": "Save a weblink to a space",
+        "description": "Object type of weblink will be analyzed and saved as an object to your space.\n\n<br>\n\n**Rate limit**: 10 requests per 60 seconds ([Learn more](https://docs.capacities.io/developer/api#rate-limits)) ",
+        "tags": [
+          "Content"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "spaceId": {
+                    "description": "[Learn more](https://docs.capacities.io/developer/api#content-ids)",
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  "url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "titleOverwrite": {
+                    "description": "If not specified, the title will be fetched from the URL",
+                    "example": "My custom title",
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "descriptionOverwrite": {
+                    "description": "If not specified, the description will be fetched from the URL",
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "tags": {
+                    "description": "Tags to add to the weblink. Tags need to exactly match your tag names in Capacities, otherwise they will be created.",
+                    "example": [
+                      "todo",
+                      "important"
+                    ],
+                    "maxItems": 30,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "mdText": {
+                    "description": "Text formatted as markdown that will be added to the notes section",
+                    "example": "This is a **note** for the weblink",
+                    "type": "string",
+                    "maxLength": 200000
+                  }
+                },
+                "required": [
+                  "spaceId",
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "spaceId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "structureId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "RootSpace",
+                            "User",
+                            "UserPersonal",
+                            "RootDatabase",
+                            "RootQuery",
+                            "RootPage",
+                            "RootStructure",
+                            "RootEntity",
+                            "RootBlocksTemplate",
+                            "MediaImage",
+                            "MediaPDF",
+                            "MediaAudio",
+                            "MediaVideo",
+                            "MediaWebResource",
+                            "MediaFile",
+                            "MediaTweet",
+                            "RootAIChat",
+                            "RootSimpleTable",
+                            "RootDailyNote",
+                            "RootTag",
+                            "UtilDate",
+                            "RootTask"
+                          ]
+                        }
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "spaceId",
+                    "id",
+                    "structureId",
+                    "title",
+                    "description",
+                    "tags"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/save-to-daily-note": {
+      "post": {
+        "summary": "Save text to today's daily note",
+        "description": "Saves a text to today's daily note in a space. The text can be formatted in markdown. Do not use this to import large amounts of content as this could break the daily note. Use the import system of Capacities instead.\n\n<br>\n\n**Rate limit**: 5 requests per 60 seconds ([Learn more](https://docs.capacities.io/developer/api#rate-limits)) ",
+        "tags": [
+          "Content"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "spaceId": {
+                    "description": "[Learn more](https://docs.capacities.io/developer/api#content-ids)",
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  },
+                  "mdText": {
+                    "description": "Markdown text that should be added to today's daily note",
+                    "example": "[ ] My important task",
+                    "type": "string",
+                    "maxLength": 200000
+                  },
+                  "origin": {
+                    "description": "The origin of the save action. This determines the icon added to your note.",
+                    "type": "string",
+                    "enum": [
+                      "commandPalette"
+                    ]
+                  },
+                  "noTimeStamp": {
+                    "description": "If true, no time stamp will be added to the note",
+                    "example": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "spaceId",
+                  "mdText"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
