@@ -55,15 +55,16 @@ EOF
 weblink "https://url" [--title ""] [--tags "a,b"] [--notes "markdown"]
 ```
 
-### create — Create new Object (opens Capacities app)
+### create — Create new Object ⚠️ LOCAL ONLY
+Requires Capacities desktop app installed. (Won't work in sandboxes, use MCP instead.)
 ```bash
 create --title "Title" --content - [--type Book|Note|Task|...] << 'EOF'
 Long markdown content with "quotes"...
 EOF
 ```
 
-### current — Get what user is looking at (opens browser tab briefly)
-Ask what's currently open in Capacities for context-aware conversations.
+### current — Get what user is looking at ⚠️ LOCAL ONLY
+Requires Capacities desktop app installed. (Won't work in sandboxes, use MCP instead.)
 ```bash
 current
 ```

@@ -6,6 +6,10 @@ A Claude skill that integrates with [Capacities](https://capacities.io), a graph
 
 This skill allows Claude to interact with your Capacities workspace — searching your notes, saving insights to your daily note, bookmarking links, and creating new objects.
 
+Works with:
+- **Claude Code** — via the skill in `.claude/skills/capacities/`
+- **Claude Desktop App** — via MCP server in `mcp/`
+
 ## Setup
 
 ### 1. Get your Capacities API token
@@ -79,12 +83,49 @@ When you mention Capacities, PKM, knowledge base, or daily notes, Claude will au
 - **Property** — Fields an object can have (e.g., Author, Rating, Due Date)
 - **Collection** — A grouping of objects within a structure type
 
+## Claude Desktop (MCP Server)
+
+To use with Claude Desktop app, add the MCP server to your config:
+
+### 1. Install dependencies
+
+```bash
+cd mcp && npm install
+```
+
+### 2. Add to Claude Desktop config
+
+Edit `%APPDATA%\Claude\claude_desktop_config.json` (Windows) or `~/Library/Application Support/Claude/claude_desktop_config.json` (Mac):
+
+```json
+{
+  "mcpServers": {
+    "capacities": {
+      "command": "node",
+      "args": ["<path-to>/claude-skill-capacities/mcp/index.js"],
+      "env": {
+        "CAPACITIES_API_TOKEN": "your_capacities_api_token",
+        "CAPACITIES_SPACE_ID": "your_capacities_space_id"
+      }
+    }
+  }
+}
+```
+
+### 3. Restart Claude Desktop
+
+The tools `space_info`, `search`, `daily_note`, `weblink`, `create`, and `current` will be available.
+
 ## File Structure
 
 ```
 .claude/skills/capacities/
-├── SKILL.md         # Instructions for Claude
+├── SKILL.md         # Instructions for Claude Code
 └── capacities.py    # CLI tool
+
+mcp/
+├── index.js         # MCP server for Claude Desktop
+└── package.json
 ```
 
 ## License

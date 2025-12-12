@@ -10,14 +10,8 @@ import os
 import subprocess
 import sys
 import urllib.parse
+import requests
 from typing import Optional
-
-# Check for requests library
-try:
-    import requests
-except ImportError:
-    print("Error: 'requests' library required. Install with: pip install requests")
-    sys.exit(1)
 
 
 API_BASE = "https://api.capacities.io"
@@ -142,7 +136,6 @@ class XCallbackURL:
     def _call_with_response(cls, action: str, params: dict, timeout: int = 10) -> dict:
         """Call x-callback-url and wait for response via local HTTP server"""
         import http.server
-        import threading
 
         result = {"response": None, "error": None}
 
@@ -264,7 +257,8 @@ def main():
     create_parser.add_argument("--space-id", default=SPACE_ID, help="Space UUID (uses default if not set)")
 
     # current command (x-callback)
-    subparsers.add_parser("current", help="Get current object (opens app)")
+    current_parser = subparsers.add_parser("current", help="Get current object (opens app)")
+    current_parser.add_argument("--space-id", default=SPACE_ID, help="Space UUID (for content search)")
 
     args = parser.parse_args()
 
@@ -318,7 +312,7 @@ def main():
 
         elif args.command == "weblink":
             api = CapacitiesAPI()
-            tags = args.tags.split(",") if args.tags else None
+            tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
             result = api.save_weblink(
                 args.space_id,
                 args.url,
@@ -351,7 +345,7 @@ def main():
                 if title:
                     print(f"\n--- Content (via search) ---\n")
                     api = CapacitiesAPI()
-                    search_result = api.search(title, [args.space_id if hasattr(args, 'space_id') else SPACE_ID], mode="fullText")
+                    search_result = api.search(title, [args.space_id], mode="fullText")
                     results = search_result.get("results", [])
                     if results:
                         for r in results:
